@@ -20,6 +20,10 @@ call plug#begin('~/.vim/plugged')		" Begin Vim-Plug plugin manager configuration
 	Plug 'plasticboy/vim-markdown'
 	" highlight C++
 	Plug 'octol/vim-cpp-enhanced-highlight'
+	" Syntastic 
+	Plug 'scrooloose/syntastic'
+	" auto-save
+	Plug '907th/vim-auto-save'
 call plug#end()			" End Vim-Plug plugin manager configuration
 
 
@@ -54,12 +58,53 @@ inoremap ( ()<ESC>i
 inoremap [ []<ESC>i
 inoremap < <><ESC>i
 inoremap { {<CR>}<ESC>O
-" make C++
-map<F5> :call CompileRunGpp()<CR>
-func! CompileRunGpp()
-exec "w"
-exec "!g++ % -o %< && ./%<"
-endfunc
+
+" Compile C language 
+function! CompileRunC()
+	let filetype = expand("%:e")
+	exec 'w'
+	if filetype == 'h'
+		exec '!gcc -fsyntax-only %'
+	else
+		exec "!mkdir -p bin && gcc % -o bin/%< && ./bin/%<"
+	endif
+endfunction 
+
+" Compile C++ language 
+function! CompileRunGpp()
+	exec "w"
+	exec "!mkdir -p bin && g++ % -o bin/%< && ./bin/%<"
+endfunction
+
+" a function you can choose how to compile 
+function! ChooseCompileMethod()
+	echo "Unrecognized file type: " . expand('%:e')
+	echo "Please choose a compile method:"
+	echo "1. Compile as C"
+	echo "2. Compile as C++"
+	let choice = input("Enter your choice:")
+	if choice == '1'
+		call CompileRunC()
+	elseif choice == '2'
+		call CompileRunGpp()
+	else 
+		echo "Invalid choice. No action taken."
+	endif
+endfunction 
+
+" Compile run function 
+function! CompileRun()
+	let filetype = expand('%:e')
+	if filetype == 'c'
+		call CompileRunC()
+	elseif filetype == 'cpp'
+		call CompileRunGpp()
+	else 
+		call ChooseCompileMethod()
+	endif 
+endfunction 
+
+map <F5> :call CompileRun()<CR>
 
 " Configure the NERDTree plugin mapping button
 " Automatically open NERDTree after opening the file
@@ -155,9 +200,31 @@ let g:ale_lint_on_text_changed = 1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
+" Syntastic 
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
+let g:syntasic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:synastic_check_on_open = 1
+let g:synastic_check_on_wq = 0
+let g:synastic_auto_jump = 1
 
+" error and warning flags 
+let g:synastic_enable_signs = 1
+let g:syntastic_error_symbol = '?'
+let g:synastic_warning_symbol = '?'
 
+" auto-save
+let g:auto_save = 1
+let g:auto_save_events = ["InsertLeave", "CursorHoldI", "CompleteDone"]
 
+" vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-
+nnoremap J :bprevious <CR>
+nnoremap K :bnext <CR>
