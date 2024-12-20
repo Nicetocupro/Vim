@@ -27,7 +27,7 @@ To install the plugins, run the following commands in Vim:
 - **'plasticboy/vim-markdown'**: A plugin that provides syntax highlighting and other features for Markdown files.
 - **'octol/vim-cpp-enhanced-highlight'**: A plugin that enhances syntax highlighting for C++ code.
 - **'scrooloose/syntastic'**: A syntax checking plugin that integrates with many linters.
-- **'907th/vim-auto-save'**: A plugin that automatically saves your files at regular intervals.
+- 'wakatime/vim-wakatime': A plugin that allows you to track the programing time and languages.
 
 ## Usage
 

@@ -22,8 +22,8 @@ call plug#begin('~/.vim/plugged')		" Begin Vim-Plug plugin manager configuration
 	Plug 'octol/vim-cpp-enhanced-highlight'
 	" Syntastic 
 	Plug 'scrooloose/syntastic'
-	" auto-save
-	Plug '907th/vim-auto-save'
+	" wakaTime
+	Plug 'wakatime/vim-wakatime'
 call plug#end()			" End Vim-Plug plugin manager configuration
 
 
@@ -215,10 +215,6 @@ let g:synastic_auto_jump = 1
 let g:synastic_enable_signs = 1
 let g:syntastic_error_symbol = '?'
 let g:synastic_warning_symbol = '?'
-
-" auto-save
-let g:auto_save = 1
-let g:auto_save_events = ["InsertLeave", "CursorHoldI", "CompleteDone"]
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
