@@ -75,17 +75,26 @@ function! CompileRunGpp()
 	exec "!mkdir -p bin && g++ % -o bin/%< && ./bin/%<"
 endfunction
 
+" Compile Python language 
+function! CompileRunPython()
+	exec "w"
+	exec "!python3 %"
+endfunction 
+
 " a function you can choose how to compile 
 function! ChooseCompileMethod()
 	echo "Unrecognized file type: " . expand('%:e')
 	echo "Please choose a compile method:"
 	echo "1. Compile as C"
 	echo "2. Compile as C++"
+	echo "3. Compole as Python"
 	let choice = input("Enter your choice:")
 	if choice == '1'
 		call CompileRunC()
 	elseif choice == '2'
 		call CompileRunGpp()
+	elseif choice == '3'
+		call CompileRunPython()
 	else 
 		echo "Invalid choice. No action taken."
 	endif
@@ -98,6 +107,8 @@ function! CompileRun()
 		call CompileRunC()
 	elseif filetype == 'cpp'
 		call CompileRunGpp()
+	elseif filetype == 'py'
+		call CompileRunPython()
 	else 
 		call ChooseCompileMethod()
 	endif 
